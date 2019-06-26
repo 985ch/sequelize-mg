@@ -1,6 +1,6 @@
 {
 	"name": "sequelize-mg",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "A customizable sequelize model generation tool",
 	"license": "MIT",
 	"repository": "985ch/sequelize-mg",

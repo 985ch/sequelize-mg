@@ -61,6 +61,7 @@ sequelizeGen(tables, info, config); // 注意：默认的v2t函数要求info.dia
 | 名字 | 格式 | 描述 |
 |:----|:-----|:-----|
 | dir | string | 生成的文件存入哪个目录，目录必须存在，默认值是'./models' |
+| gfn | (table)=>'' | GenerateFileName，输入表名，生成一个文件名，默认情况下表名就是文件名 |
 | gt | (table, fields, info, config)=>'' | GenerateTable，生成可替换区域的文本，其中fields是已经处理好的文本 |
 | f2t | (table, field, obj, info, config)=>'' | FieldToText，生成表的列信息文本并返回，所有列文本加起来得到fields |
 | t2t | (table, field, obj, info, config)=>'' | TypeToText，生成类型文本并返回，返回结果存储到obj.typeText |
@@ -73,6 +74,10 @@ sequelizeGen(tables, info, config); // 注意：默认的v2t函数要求info.dia
 | fileTail | string | 文件尾，可替换区域后面的部分，尽在生成新的模型文件时生效 |
 | fileOptions | any | 读写文件时的options，默认为'utf8' |
 | rewrite | boolean | 在模型文件已经存在的时候，是否重新生成整个文件，默认是false |
+
+## 默认配置
+外部传入的配置会和默认配置合并，你可以在[这里](./lib/default)查看默认配置
+
 ## 执行测试脚本
 
 ```sh
