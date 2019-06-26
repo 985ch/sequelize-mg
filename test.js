@@ -7,7 +7,6 @@ const _ = require('lodash');
 const auto = new AutoSequelize('database', 'yourname', 'yourpass', {
   dialect: 'mysql',
   directory: false, // we don't use sequelize-auto to generate model files
-  tables: [ 'users' ],
   define: {
     timestamps: false,
     freezeTableName: true,
