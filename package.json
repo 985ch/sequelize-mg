@@ -1,0 +1,33 @@
+{
+	"name": "sequelize-mg",
+	"version": "0.0.1",
+	"description": "A customizable sequelize model generation tool",
+	"license": "MIT",
+	"repository": "985ch/sequelize-mg",
+	"engines": {
+		"node": ">=8"
+	},
+	"scripts": {
+		"test": "node test"
+	},
+	"files": [
+		"lib",
+		"index.js"
+	],
+	"keywords": [
+		"sequelize",
+		"model",
+		"generator",
+		"customizable"
+	],
+	"homepage": "https://github.com/985ch/sequelize-mg#readme",
+	"author": "985ch",
+	"dependencies": {
+		"lodash": "^4.17.11",
+		"sequelize": "^5.8.12"
+	},
+	"devDependencies": {
+		"eslint": "^6.0.1",
+		"eslint-config-egg": "^7.4.1"
+	}
+}
