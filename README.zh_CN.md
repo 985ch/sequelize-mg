@@ -55,7 +55,7 @@ auto.run(err => {
 const sequelizeGen = require('sequelize-mg');
 
 const { tables, info, config} = yourDatabaseReader(params);
-sequelizeGen(auto.tables, info, config); // 注意：默认的v2t函数要求info.dialect必须存在并且是一个字符串
+sequelizeGen(tables, info, config); // 注意：默认的v2t函数要求info.dialect必须存在并且是一个字符串
 ```
 ## Config
 | 名字 | 格式 | 描述 |
