@@ -61,7 +61,7 @@ sequelizeGen(tables, info, config); // Note: The default v2t function requires i
 ## Config
 | name | format | description |
 |:-----|:-------|:------------|
-| dir | string | Specify the storage path of the model file. The corresponding directory must already exist. The default value is './models'. |
+| dir | string | Specify the storage path of the model file. The default value is './models'. |
 | gfn | (table)=>'' | GenerateFileName，Generate a file name based on the table name. By default, the table name is the file name. |
 | gt | (table, fields, info, config)=>'' | GenerateTable，Generate text for the replaceable area, where fields are already processed text |
 | f2t | (table, field, obj, info, config)=>'' | FieldToText，Generate field text for the table |

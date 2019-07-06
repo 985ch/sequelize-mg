@@ -60,7 +60,7 @@ sequelizeGen(tables, info, config); // 注意：默认的v2t函数要求info.dia
 ## Config
 | 名字 | 格式 | 描述 |
 |:----|:-----|:-----|
-| dir | string | 生成的文件存入哪个目录，目录必须存在，默认值是'./models' |
+| dir | string | 生成的文件存入哪个目录，默认值是'./models' |
 | gfn | (table)=>'' | GenerateFileName，输入表名，生成一个文件名，默认情况下表名就是文件名 |
 | gt | (table, fields, info, config)=>'' | GenerateTable，生成可替换区域的文本，其中fields是已经处理好的文本 |
 | f2t | (table, field, obj, info, config)=>'' | FieldToText，生成表的列信息文本并返回，所有列文本加起来得到fields |
