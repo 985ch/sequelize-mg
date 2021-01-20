@@ -2,7 +2,6 @@
 
 const AutoSequelize = require('sequelize-auto');
 const sequelizeGen = require('./');
-const _ = require('lodash');
 
 const auto = new AutoSequelize('database', 'yourname', 'yourpass', {
   dialect: 'mysql',
@@ -12,15 +11,16 @@ const auto = new AutoSequelize('database', 'yourname', 'yourpass', {
     freezeTableName: true,
   },
 });
-auto.run(err => {
-  if (err) throw err;
-
-  for (const tableName in auto.tables) {
-    for (const fieldName in auto.tables[tableName]) {
-      const field = auto.tables[tableName][fieldName];
-      field.isSerialKey = field.foreignKey && _.isFunction(auto.dialect.isSerialKey) && auto.dialect.isSerialKey(field.foreignKey);
+auto.run().then(data => {
+  const tables = {};
+  for (const tableName in data.tables) {
+    const table = data.tables[tableName];
+    for (const fieldName in table) {
+      const field = table[fieldName];
+      field.isSerialKey = field.foreignKey;
     }
+    tables[tableName] = { columns: table, comment: 'sample' };
   }
 
-  sequelizeGen(auto.tables, { dialect: 'mysql' });
+  sequelizeGen(tables, { dialect: 'mysql' });
 });

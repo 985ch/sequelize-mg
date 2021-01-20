@@ -22,33 +22,33 @@
 npm i sequelize-mg
 ```
 ## Usage
-The following is an example of creating a mysql correspondence table using [sequelize-auto](https://github.com/sequelize/sequelize-auto). Please confirm that the ./models/ directory already exists and the corresponding package has been installed.
+The following is an example of creating a mysql correspondence table using [sequelize-auto](https://github.com/sequelize/sequelize-auto). Please confirm that the ./models/ directory already exists.
 ```js
 'use strict';
 
 const AutoSequelize = require('sequelize-auto');
-const sequelizeGen = require('sequelize-mg');
-const _ = require('lodash');
+const sequelizeGen = require('./');
 
 const auto = new AutoSequelize('database', 'yourname', 'yourpass', {
   dialect: 'mysql',
-  directory: false, // we don't need to generate the model file via sequelize-auto, so set it to false here.
+  directory: false, // we don't use sequelize-auto to generate model files
   define: {
     timestamps: false,
     freezeTableName: true,
   },
 });
-auto.run(err => {
-  if (err) throw err;
-
-  for (const tableName in auto.tables) {
-    for (const fieldName in auto.tables[tableName]) {
-      const field = auto.tables[tableName][fieldName];
-      field.isSerialKey = field.foreignKey && _.isFunction(auto.dialect.isSerialKey) && auto.dialect.isSerialKey(field.foreignKey);
+auto.run().then(data => {
+  const tables = {};
+  for (const tableName in data.tables) {
+    const table = data.tables[tableName];
+    for (const fieldName in table) {
+      const field = table[fieldName];
+      field.isSerialKey = field.foreignKey;
     }
+    tables[tableName] = { columns: table, comment: 'sample' };
   }
 
-  sequelizeGen(auto.tables, { dialect: 'mysql' });
+  sequelizeGen(tables, { dialect: 'mysql' });
 });
 ```
 You can also get tables in other ways, and generate your own model files with your own defined info like this.
@@ -63,7 +63,7 @@ sequelizeGen(tables, info, config); // Note: The default v2t function requires i
 |:-----|:-------|:------------|
 | dir | string | Specify the storage path of the model file. The default value is './models'. |
 | gfn | (table)=>'' | GenerateFileName，Generate a file name based on the table name. By default, the table name is the file name. |
-| gt | (table, fields, info, config)=>'' | GenerateTable，Generate text for the replaceable area, where fields are already processed text |
+| gt | (table, fields, comment, info, config)=>'' | GenerateTable，Generate text for the replaceable area, where fields are already processed text |
 | f2t | (table, field, obj, info, config)=>'' | FieldToText，Generate field text for the table |
 | t2t | (table, field, obj, info, config)=>'' | TypeToText，Generate type text and return, the result is stored to obj.typeText |
 | v2t | (table, field, obj, info, config)=>'' | defaultValueToText，Generate defaultValue text and return, return the result to obj.defaultValText |
@@ -75,6 +75,7 @@ sequelizeGen(tables, info, config); // Note: The default v2t function requires i
 | fileTail | string | End of file, the part after the replaceable area, only valid when creating a new model file |
 | fileOptions | any | Options when reading and writing files, defaults to 'utf8' |
 | rewrite | boolean | Force the entire file to be regenerated, the default is false |
+| notice | (name, table, flag)=>null | If this parameter is configured, the method is called when the table changes |
 
 ## Default configuration
 The external incoming configuration will be merged with the default configuration, you can view the default configuration in [here] (./lib/default)

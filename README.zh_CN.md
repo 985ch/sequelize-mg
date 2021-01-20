@@ -21,33 +21,33 @@
 npm i sequelize-mg
 ```
 ## 使用方法
-以下是使用[sequelize-auto](https://github.com/sequelize/sequelize-auto)创建mysql对应表的例子，请确认./models/目录已经存在并且已经安装对应包
+以下是使用[sequelize-auto](https://github.com/sequelize/sequelize-auto)创建mysql对应表的例子，请确认./models/目录已经存在
 ```js
 'use strict';
 
 const AutoSequelize = require('sequelize-auto');
-const sequelizeGen = require('sequelize-mg');
-const _ = require('lodash');
+const sequelizeGen = require('./');
 
 const auto = new AutoSequelize('database', 'yourname', 'yourpass', {
   dialect: 'mysql',
-  directory: false, // 我们不需要通过sequelize-auto来生成模型文件，因此这里设为false
+  directory: false, // we don't use sequelize-auto to generate model files
   define: {
     timestamps: false,
     freezeTableName: true,
   },
 });
-auto.run(err => {
-  if (err) throw err;
-
-  for (const tableName in auto.tables) {
-    for (const fieldName in auto.tables[tableName]) {
-      const field = auto.tables[tableName][fieldName];
-      field.isSerialKey = field.foreignKey && _.isFunction(auto.dialect.isSerialKey) && auto.dialect.isSerialKey(field.foreignKey);
+auto.run().then(data => {
+  const tables = {};
+  for (const tableName in data.tables) {
+    const table = data.tables[tableName];
+    for (const fieldName in table) {
+      const field = table[fieldName];
+      field.isSerialKey = field.foreignKey;
     }
+    tables[tableName] = { columns: table, comment: 'sample' };
   }
 
-  sequelizeGen(auto.tables, { dialect: 'mysql' });
+  sequelizeGen(tables, { dialect: 'mysql' });
 });
 ```
 你也可以通过其他方式来获得tables，并且用你自己定义的info来生成模型文件
@@ -62,7 +62,7 @@ sequelizeGen(tables, info, config); // 注意：默认的v2t函数要求info.dia
 |:----|:-----|:-----|
 | dir | string | 生成的文件存入哪个目录，默认值是'./models' |
 | gfn | (table)=>'' | GenerateFileName，输入表名，生成一个文件名，默认情况下表名就是文件名 |
-| gt | (table, fields, info, config)=>'' | GenerateTable，生成可替换区域的文本，其中fields是已经处理好的文本 |
+| gt | (table, fields, comment, info, config)=>'' | GenerateTable，生成可替换区域的文本，其中fields是已经处理好的文本 |
 | f2t | (table, field, obj, info, config)=>'' | FieldToText，生成表的列信息文本并返回，所有列文本加起来得到fields |
 | t2t | (table, field, obj, info, config)=>'' | TypeToText，生成类型文本并返回，返回结果存储到obj.typeText |
 | v2t | (table, field, obj, info, config)=>'' | defaultValueToText，生成默认值文本并返回，返回结果储存到obj.defaultValText |
@@ -74,6 +74,7 @@ sequelizeGen(tables, info, config); // 注意：默认的v2t函数要求info.dia
 | fileTail | string | 文件尾，可替换区域后面的部分，尽在生成新的模型文件时生效 |
 | fileOptions | any | 读写文件时的options，默认为'utf8' |
 | rewrite | boolean | 在模型文件已经存在的时候，是否重新生成整个文件，默认是false |
+| notice | (name, table, flag)=>null | 若配置该参数，则在指定表发生变化时调用该方法 |
 
 ## 默认配置
 外部传入的配置会和默认配置合并，你可以在[这里](./lib/default)查看默认配置
