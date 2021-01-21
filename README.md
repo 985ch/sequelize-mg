@@ -75,7 +75,7 @@ sequelizeGen(tables, info, config); // Note: The default v2t function requires i
 | fileTail | string | End of file, the part after the replaceable area, only valid when creating a new model file |
 | fileOptions | any | Options when reading and writing files, defaults to 'utf8' |
 | rewrite | boolean | Force the entire file to be regenerated, the default is false |
-| notice | (name, table, flag)=>null | If this parameter is configured, the method is called when the table changes |
+| notice | (name, table, flag)=>null | If you configure this parameter, call this method after generating the model |
 
 ## Default configuration
 The external incoming configuration will be merged with the default configuration, you can view the default configuration in [here] (./lib/default)

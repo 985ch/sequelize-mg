@@ -74,7 +74,7 @@ sequelizeGen(tables, info, config); // 注意：默认的v2t函数要求info.dia
 | fileTail | string | 文件尾，可替换区域后面的部分，尽在生成新的模型文件时生效 |
 | fileOptions | any | 读写文件时的options，默认为'utf8' |
 | rewrite | boolean | 在模型文件已经存在的时候，是否重新生成整个文件，默认是false |
-| notice | (name, table, flag)=>null | 若配置该参数，则在指定表发生变化时调用该方法 |
+| notice | (name, table, flag)=>null | 若配置该参数，则在生成模型后调用该方法 |
 
 ## 默认配置
 外部传入的配置会和默认配置合并，你可以在[这里](./lib/default)查看默认配置
